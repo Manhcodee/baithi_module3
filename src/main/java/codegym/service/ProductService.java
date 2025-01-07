@@ -53,4 +53,38 @@ public class ProductService {
             e.printStackTrace();
         }
     }
+
+    public List<Product> getTopSellingProducts(int top) {
+        List<Product> productList = new ArrayList<>();
+        String sql = "SELECT Product.ProductID, Product.ProductName, Product.Price, Product.Discount, Product.Stock, SUM(OrderDetail.Quantity) AS TotalQuantity " +
+                "FROM Product " +
+                "JOIN OrderDetail ON Product.ProductID = OrderDetail.ProductID " +
+                "GROUP BY Product.ProductID " +
+                "ORDER BY TotalQuantity DESC " +
+                "LIMIT ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, top);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Product product = new Product(
+                        resultSet.getInt("ProductID"),
+                        resultSet.getString("ProductName"),
+                        resultSet.getDouble("Price"),
+                        resultSet.getString("Discount"),
+                        resultSet.getInt("Stock")
+                );
+                productList.add(product);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return productList;
+    }
+
+
 }

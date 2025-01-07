@@ -30,12 +30,23 @@
         button:hover {
             background-color: #45a049;
         }
+        .form-group {
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
 <h2>Danh sách sản phẩm</h2>
 <button onclick="location.href='addProduct.jsp'">Thêm mới</button>
-<button onclick="location.href='topProducts.jsp'">Danh sách top sản phẩm bán chạy nhất</button>
+<form action="${pageContext.request.contextPath}/products" method="get" class="form-group">
+    <label for="top">Xem top sản phẩm bán chạy nhất:</label>
+    <select id="top" name="top">
+        <option value="3">Top 3</option>
+        <option value="5">Top 5</option>
+        <option value="10">Top 10</option>
+    </select>
+    <button type="submit" name="action" value="topProducts">Xem</button>
+</form>
 <form action="filterProducts" method="get">
     <label for="startDate">Danh sách sản phẩm được đặt từ:</label>
     <input type="date" id="startDate" name="startDate">
@@ -63,3 +74,5 @@
 </table>
 </body>
 </html>
+
+

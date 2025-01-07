@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "ProductServlet", urlPatterns = "/ProductServlet")
+@WebServlet(name = "ProductServlet", urlPatterns = "/products")
 public class ProductServlet extends HttpServlet {
     private ProductService productService;
 
@@ -45,13 +45,22 @@ public class ProductServlet extends HttpServlet {
         Product product = new Product(0, name, price, discount, stock);
         productService.addProduct(product);
 
-        response.sendRedirect("ProductServlet");
+        response.sendRedirect(request.getContextPath() + "/products");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Product> productList = productService.getAllProducts();
-        request.setAttribute("productList", productList);
-        request.getRequestDispatcher("views/productList.jsp").forward(request, response);
+        String action = request.getParameter("action");
+        if ("topProducts".equals(action)) {
+            String topStr = request.getParameter("top");
+            int top = Integer.parseInt(topStr);
+            List<Product> productList = productService.getTopSellingProducts(top);
+            request.setAttribute("productList", productList);
+            request.getRequestDispatcher("views/productList.jsp").forward(request, response);
+        } else {
+            List<Product> productList = productService.getAllProducts();
+            request.setAttribute("productList", productList);
+            request.getRequestDispatcher("views/productList.jsp").forward(request, response);
+        }
     }
 }
