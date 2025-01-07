@@ -37,7 +37,7 @@
 </head>
 <body>
 <h2>Danh sách sản phẩm</h2>
-<button onclick="location.href='addProduct.jsp'">Thêm mới</button>
+<button onclick="location.href='/views/addProduct.jsp'">Thêm mới</button>
 <form action="${pageContext.request.contextPath}/products" method="get" class="form-group">
     <label for="top">Xem top sản phẩm bán chạy nhất:</label>
     <select id="top" name="top">

@@ -22,6 +22,9 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+
         String name = request.getParameter("name");
         String priceStr = request.getParameter("price");
         String discount = request.getParameter("discount");
